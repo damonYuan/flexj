@@ -23,6 +23,7 @@ final class PlanBuilder {
 
     private final NodeSpec[] specs;
     private final Map<Class<?>, Integer> indexByType;
+    // marks[0..specs.length) track handlers; marks[specs.length..2*specs.length) track evals.
     private final byte[] marks;
     private final List<Action> actions = new ArrayList<>();
     private final List<String> path = new ArrayList<>();
@@ -113,7 +114,7 @@ final class PlanBuilder {
         for (final var dep : deps) {
             visitEval(indexByType.get(dep), eventType);
         }
-        path.remove(path.size() - 1);
+        path.removeLast();
         marks[markIndex] = DONE;
         actions.add(action);
     }
